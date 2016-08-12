@@ -2,23 +2,19 @@ instance_groups:
 - instances: 1
   name: arbitrator_z3
   azs: [z3]
-  networks:
-  - name: default
+  networks: [{name: default}]
   vm_type: default
   stemcell: default
   jobs:
-  - release: cf-mysql
-    name: arbitrator
+  - {release: cf-mysql, name: arbitrator}
 - instances: 2
   name: mysql_z1
   azs: [z1,z2,z3]
-  networks:
-  - name: default
+  networks: [{name: default}]
   vm_type: default
   stemcell: default
   jobs:
-  - name: mysql
-    release: cf-mysql
+  - {name: mysql, release: cf-mysql}
 - instances: 2
   name: proxy_z1
   azs: [z1,z2,z3]
@@ -30,54 +26,42 @@ instance_groups:
   vm_type: default
   stemcell: default
   jobs:
-  - name: proxy
-    release: cf-mysql
+  - {name: proxy, release: cf-mysql}
 - instances: 2
   name: cf-mysql-broker_z1
   azs: [z1,z2,z3]
-  networks:
-  - name: default
+  networks: [{name: default}]
   vm_type: default
   stemcell: default
   jobs:
-  - name: cf-mysql-broker
-    release: cf-mysql
+  - {name: cf-mysql-broker, release: cf-mysql}
 - instances: 1
   lifecycle: errand
   name: acceptance-tests
   azs: [z1]
-  networks:
-  - name: default
-  properties: {}
+  networks: [{name: default}]
   vm_type: default
   stemcell: default
   jobs:
-  - name: acceptance-tests
-    release: cf-mysql
+  - {name: acceptance-tests, release: cf-mysql}
 - instances: 1
   lifecycle: errand
   name: broker-registrar
   azs: [z1]
-  networks:
-  - name: default
-  properties: {}
+  networks: [{name: default}]
   vm_type: default
   stemcell: default
   jobs:
-  - name: broker-registrar
-    release: cf-mysql
+  - {name: broker-registrar, release: cf-mysql}
 - instances: 1
   lifecycle: errand
   name: broker-deregistrar
   azs: [z1]
-  networks:
-  - name: default
-  properties: {}
+  networks: [{name: default}]
   vm_type: default
   stemcell: default
   jobs:
-  - name: broker-registrar
-    release: cf-mysql
+  - {name: broker-registrar, release: cf-mysql}
 
 name: cf-warden-mysql
 
