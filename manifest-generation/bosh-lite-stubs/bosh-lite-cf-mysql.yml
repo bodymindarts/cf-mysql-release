@@ -29,7 +29,7 @@ instance_groups:
     - 10.244.8.3
   vm_type: default
   stemcell: default
-  templates:
+  jobs:
   - name: proxy
     release: cf-mysql
 - instances: 2
@@ -39,7 +39,7 @@ instance_groups:
   - name: default
   vm_type: default
   stemcell: default
-  templates:
+  jobs:
   - name: cf-mysql-broker
     release: cf-mysql
 - instances: 1
@@ -51,7 +51,7 @@ instance_groups:
   properties: {}
   vm_type: default
   stemcell: default
-  templates:
+  jobs:
   - name: acceptance-tests
     release: cf-mysql
 - instances: 1
@@ -63,7 +63,7 @@ instance_groups:
   properties: {}
   vm_type: default
   stemcell: default
-  templates:
+  jobs:
   - name: broker-registrar
     release: cf-mysql
 - instances: 1
@@ -75,7 +75,7 @@ instance_groups:
   properties: {}
   vm_type: default
   stemcell: default
-  templates:
+  jobs:
   - name: broker-registrar
     release: cf-mysql
 
@@ -116,9 +116,6 @@ properties:
     proxy:
       api_password: ((cf_mysql_proxy_api_password))
       api_username: ((cf_mysql_proxy_api_username))
-      proxy_ips:
-      - 10.244.7.3
-      - 10.244.8.3
   consul:
     agent:
       domain: ((consul_agent_domain))
