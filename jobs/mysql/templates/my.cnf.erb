@@ -1,8 +1,14 @@
 <%
-  base_folder = '/var/vcap/sys/run/mysql'
+mysql_cluster_ips = Array.new
 
-  # cluster_ips may contain nil values due to lack of flexibility in spiff
-  cluster_ips = p('cf_mysql.mysql.cluster_ips').compact
+link("cf_mysql").instances.map do |instance|
+  mysql_cluster_ips.push(instance.address)
+end
+
+%>
+
+<%
+  base_folder = '/var/vcap/sys/run/mysql'
 
   def discover_external_ip
     networks = spec.networks.marshal_dump
@@ -35,7 +41,7 @@ nice      = 0
 # GALERA options:
 wsrep_provider=/var/vcap/packages/mariadb/lib/plugin/libgalera_smm.so
 wsrep_provider_options="gcache.size=<%= p('cf_mysql.mysql.gcache_size') %>M;pc.recovery=TRUE;pc.checksum=TRUE"
-wsrep_cluster_address="gcomm://<%= cluster_ips.join(",") %>"
+wsrep_cluster_address="gcomm://<%= mysql_cluster_ips.join(",") %>"
 wsrep_node_address='<%= network_ip %>:<%= p('cf_mysql.mysql.galera_port') %>'
 wsrep_node_name='<%= name %>/<%= index %>'
 wsrep_cluster_name='cf-mariadb-galera-cluster'

@@ -1,13 +1,19 @@
 instance_groups:
-- instances: 3
+- instances: 1
+  name: arbitrator_z3
+  azs: [z3]
+  networks:
+  - name: default
+  vm_type: default
+  stemcell: default
+  jobs:
+  - release: cf-mysql
+    name: arbitrator
+- instances: 2
   name: mysql_z1
   azs: [z1,z2,z3]
   networks:
   - name: default
-    static_ips:
-    - 10.244.7.2
-    - 10.244.8.2
-    - 10.244.9.2
   vm_type: default
   stemcell: default
   jobs:
@@ -100,11 +106,8 @@ properties:
       admin_password: ((cf_mysql_mysql_admin_password))
       cluster_health:
         password: ((cf_mysql_mysql_cluster_health_password))
-      cluster_ips:
-      - 10.244.7.2
-      - 10.244.8.2
-      - 10.244.9.2
       galera_healthcheck:
+        db_password: ((cf_mysql_mysql_galera_healthcheck_db_password))
         endpoint_password: ((cf_mysql_mysql_galera_healthcheck_endpoint_password))
         endpoint_username: ((cf_mysql_mysql_galera_healthcheck_endpoint_username))
       persistent_disk: 100000
@@ -113,7 +116,6 @@ properties:
     proxy:
       api_password: ((cf_mysql_proxy_api_password))
       api_username: ((cf_mysql_proxy_api_username))
-      arbitrator_ip: 10.244.9.6
       proxy_ips:
       - 10.244.7.3
       - 10.244.8.3

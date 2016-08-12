@@ -1,9 +1,10 @@
 <%
-# cluster_ips may contain nil values due to lack of flexibility in spiff
-cluster_ips = p('cf_mysql.mysql.cluster_ips').compact
+mysql_cluster_ips = Array.new
 
-# do not route traffic to arbitrator
-cluster_ips.delete(p('cf_mysql.proxy.arbitrator_ip'))
+link("cf_mysql").instances.map do |instance|
+  mysql_cluster_ips.push(instance.address)
+end
+
 %>
 
 "API":
@@ -15,7 +16,7 @@ cluster_ips.delete(p('cf_mysql.proxy.arbitrator_ip'))
   "Port": <%= p('cf_mysql.proxy.port') %>
   "HealthcheckTimeoutMillis": <%= p("cf_mysql.proxy.healthcheck_timeout_millis") %>
   "Backends":
-  <% cluster_ips.each_with_index do |ip, n| %>
+  <% mysql_cluster_ips.each_with_index do |ip, n| %>
   - "Host": <%= ip %>
     "Port": 3306
     "StatusPort": 9200

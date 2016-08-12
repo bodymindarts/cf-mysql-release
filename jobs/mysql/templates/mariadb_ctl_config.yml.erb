@@ -1,4 +1,12 @@
 ---
+<%
+mysql_cluster_ips = Array.new
+
+link("cf_mysql").instances.map do |instance|
+  mysql_cluster_ips.push(instance.address)
+end
+
+%>
 
 <%   
 def discover_external_ip
@@ -15,11 +23,6 @@ def discover_external_ip
      network.ip
    end
    network_ip = discover_external_ip
-%>
-
-<%
-# cluster_ips may contain nil values due to lack of flexibility in spiff
-cluster_ips = p('cf_mysql.mysql.cluster_ips').compact
 %>
 
 LogFileLocation: /var/vcap/sys/log/mysql/mariadb_ctrl.combined.log
@@ -49,7 +52,7 @@ Upgrader:
 Manager:
   StateFileLocation: /var/vcap/store/mysql/state.txt
   ClusterIps:
-  <% cluster_ips.each do |ip| %>
+  <% mysql_cluster_ips.each do |ip| %>
   - <%= ip %>
   <% end %>
   MyIP: <%= network_ip %>

@@ -5,12 +5,15 @@ packages:
 templates:
   errand.sh.erb: bin/run
   config.yml.erb: config/config.yml
+
+consumes:
+- name: cf_mysql
+  type: db
+
 properties:
   cf_mysql.mysql.healthcheck_port:
     description: 'Port used by healthcheck process to listen on'
     default: 9200
-  cf_mysql.mysql.cluster_ips:
-    description: 'IP addresses of all MySQL nodes'
   cf_mysql.mysql.galera_healthcheck.endpoint_username:
     description: 'Username used to contact the sidecar endpoints via Basic Auth'
   cf_mysql.mysql.galera_healthcheck.endpoint_password:

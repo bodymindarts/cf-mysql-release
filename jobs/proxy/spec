@@ -14,6 +14,10 @@ packages:
 - syslog_aggregator
 - cf-mysql-route-registrar
 
+consumes:
+- name: cf_mysql
+  type: db
+
 properties:
   nats.user:
     description: 'Username to register a route via NATS'
@@ -42,8 +46,6 @@ properties:
     description: "Standalone Mode: Are you deploying MySQL without a CloudFoundry deployment?"
     default: false
 
-  cf_mysql.mysql.cluster_ips:
-    description: "List of nodes.  Must have the same number of ips as there are nodes in the cluster"
   cf_mysql.proxy.port:
     description: "Port for the proxy to listen on"
     default: 3306
@@ -65,9 +67,6 @@ properties:
     default: 1936
   cf_mysql.proxy.proxy_ips:
     description: "List of IP addresses for all proxy jobs"
-  cf_mysql.proxy.arbitrator_ip:
-    description: "List of IP addresses for the arbitrator nodes of the MySQL cluster"
-    default: "no-arbitrator-ip"
   cf_mysql.proxy.consul_enabled:
     description: "Enable locking and discovery of switchboard through consul"
     default: false

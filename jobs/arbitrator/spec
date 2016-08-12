@@ -12,6 +12,10 @@ packages:
 - galera-healthcheck
 - cf-mysql-common
 
+consumes:
+- name: cf_mysql
+  type: db
+
 properties:
   cf_mysql.mysql.admin_username:
     description: 'Username for the MySQL server admin user'
@@ -24,8 +28,6 @@ properties:
   cf_mysql.mysql.galera_port:
     description: 'Port which garbd listens on'
     default: 4567
-  cf_mysql.mysql.cluster_ips:
-    description: 'List of nodes.  Must have the same number of ips as there are nodes in the cluster'
 
   cf_mysql.mysql.galera_healthcheck.endpoint_username:
     description: 'Username used by the sidecar endpoints for Basic Auth'

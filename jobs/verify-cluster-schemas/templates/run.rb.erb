@@ -1,9 +1,18 @@
+<%
+mysql_cluster_ips = Array.new
+
+link("cf_mysql").instances.map do |instance|
+  mysql_cluster_ips.push(instance.address)
+end
+
+%>
+
 #!/var/vcap/packages/ruby/bin/ruby
 
 require '/var/vcap/packages/cluster-schema-verifier/cluster_schema_verifier.rb'
 
 config = {
-    cluster_ips: <%= p('cf_mysql.mysql.cluster_ips').compact %>,
+    cluster_ips: <%= mysql_cluster_ips %>,
     arbitrator_ip: '<%= p('cf_mysql.proxy.arbitrator_ip') %>',
     mysql_port: <%= p('cf_mysql.mysql.port') %>,
     healthcheck_port: <%= p('cf_mysql.mysql.healthcheck_port') %>,
